@@ -7,8 +7,6 @@
 .order__payment-title {
   display: flex;
   align-items: center;
-  /* padding-left: 30px;
-  height: 95px; */
 	padding: 29px 0 30px 30px;
   background-color: #FFFFFF;
   font-size: 30px;
@@ -71,7 +69,6 @@
 .passengers__container-item,
 .passengers__container-item-border {
   display: flex;
-  /* height: 218px; */
 	padding: 38px 0;
 }
 

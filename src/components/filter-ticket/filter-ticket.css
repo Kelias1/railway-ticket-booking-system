@@ -199,17 +199,6 @@
 	background-color: transparent;
 }
 
-.range__input-in:after {
-	content: "";
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	top: -4px;
-	background-color: #fff;
-	border-radius: 50%;
-	transition: left .4s ease-in-out;
-}
-
 .range__input-in, .range__input-out {
 	width: 295px;
 	height: 20px;
@@ -224,23 +213,28 @@
 }
 
 .range__input-in {
-	transform: rotate(0);
+	transform: rotate(0deg);
 }
 
-.range__input-out {
-	padding-right: 145px;
+.range__input-in::-webkit-slider-thumb,
+.range__input-out::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  pointer-events: all;
 }
 
-.range__input-out:after {
-	content: "";
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	top: -4px;
-	left: 43%;
-	background-color: #fff;
-	border-radius: 50%;
-	transition: left .4s ease-in-out;
+.range__input-in::-moz-range-thumb,
+.range__input-out::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  pointer-events: all;
 }
 
 .range__line {
@@ -328,7 +322,7 @@
 	background-image: url(../../assets/images/show-down.png);
 }
 
-.travel-date__range-departure {
+.travel-date__range-departure, .travel-date__range-return {
 	margin: 0 35px 45px 25px;
 }
 
@@ -353,7 +347,7 @@
 }
 
 .range__input-date-in {
-	transform: rotate(0);
+	transform: rotate(0deg);
 }
 .range__input-date-out, .range__input-date-in {
 	width: 300px;
@@ -366,6 +360,27 @@
 	border-radius: 8px;
 	pointer-events: none;
 	z-index: 1;
+}
+
+.range__input-date-in::-webkit-slider-thumb,
+.range__input-date-out::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.range__input-date-in::-moz-range-thumb,
+.range__input-date-out::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  pointer-events: all;
 }
 
 .range__travel-date-line {

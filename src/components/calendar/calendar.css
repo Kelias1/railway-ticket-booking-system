@@ -1,6 +1,6 @@
-/* .calendar__from {
+.calendar__from {
 	position: absolute;
-	width: 51%;
+	width: 48%;
   height: 297px;
   top: -67px;
 	left: -11px;
@@ -9,12 +9,12 @@
 
 .calendar__to {
 	position: absolute;
-	width: 51%;
+	width: 48%;
 	height: 297px;
-	top: 60px;
-	left: 53%;
+	top: -67px;
+	left: 48%;
 	z-index: 1;
-} */
+}
 
 .filter__calendar-from, .filter__calendar-to {
 	position: absolute;
@@ -79,18 +79,11 @@
 	background-image: url(../../assets/images/next.png);
 }
 
-/* .calendar__table {
-	border-collapse: collapse;
-	font-weight: 400;
-	width: 100%;
-	height: 79%;
-	text-align: center;
-} */
-
 .calendar__date {
+	font-size: 20px;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(32px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
   grid-gap: 10px;
   box-sizing: border-box;
 

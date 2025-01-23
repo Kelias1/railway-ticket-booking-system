@@ -1,6 +1,6 @@
 import '../main.css';
 
-function About() {
+export const About = () => {
 	return (
 		<section id="about" className="main__about">
 			<h2 className="about__title">о нас</h2>
@@ -15,6 +15,4 @@ function About() {
 			</div>
 		</section>
 	)
-}
-
-export default About;
+};

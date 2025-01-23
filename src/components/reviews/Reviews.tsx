@@ -1,40 +1,95 @@
-import imgReview1 from '../../assets/images/review1.png';
-import imgReview2 from '../../assets/images/review2.png';
+import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
+import { reviews } from '../../utils/reviews';
 import './reviews.css';
 
-function Reviews() {
+export const Reviews = () => {
+	const length = -718;
+	const dotsArray = [...reviews];
+	dotsArray.splice(0, 2);
+	const element = useRef<HTMLDivElement>(null);
+	const [num, setNum] = useState<number>(0);
+	const [translate, setTranslate] = useState<number>(0);
+	const [view, setView] = useState<number>(window.scrollY);
+
+	function counter(arg: number): void {
+		if (element.current) {
+			for (const item of element.current.children) {
+				item.classList.remove('active__dot');
+			};
+
+			if (num === dotsArray.length) {
+				element.current.children[0].classList.add('active__dot');
+				setTranslate(0);
+				setNum(0);
+			} else {
+				element.current.children[arg + 1].classList.toggle('active__dot');
+				setTranslate(length * (arg + 1));
+				setNum(arg + 1);
+			};
+		};
+	};
+
+	useEffect(() => {
+		const interval = setInterval(() => setView(window.scrollY), 1000);
+		return () => clearInterval(interval);
+	});
+
+	useEffect(() => {
+		const carouselInterval = setTimeout(() => {
+			if (view >= 2100 && view <= 2400) {
+				counter(num);
+			};
+		}, 2 * 1000);
+		return () => clearTimeout(carouselInterval);
+	});
+
+	function changeReview(ev: BaseSyntheticEvent): void {
+		if (element.current) {
+			const div = ev.target;
+			let count = 0;
+			for (const item of element.current.children) {
+				item.classList.remove('active__dot');
+				if (div.classList.contains(`dot__${count}`)) {
+					setTranslate(length * (count + 1));
+				};
+				count += 1;
+			};
+
+			div.classList.toggle('active__dot');
+			if (div.classList.contains('dot')) {
+				setTranslate(0);
+			};
+		};
+	};
+
 	return (
-		<>
 		<section id="reviews" className="main__reviews">
 			<h2 className="reviews__title">отзывы</h2>
 			<div className="reviews-container">
-				<div className="reviews__carousel">
-					<div className="review">
-						<img src={imgReview1} className="review__image" alt="Екатерина Вальнова" />
-						<div className="review__wrap">
-							<span className="review__name">Екатерина Вальнова</span>
-							<p className="review__text">Доброжелательные подсказки <br /> на&nbsp;всех этапах помогут правильно заполнить поля и&nbsp;без затруднений купить авиа или ж/д билет, даже если вы&nbsp;заказываете онлайн билет <br /> впервые.</p>
+				<div className="reviews__carousel" style={{ transform: `translateX(${translate}px)` }}>
+
+					{reviews.map((elem, i) => (
+						<div className="review" key={elem.name + i}>
+							<img className="review__image" src={elem.image} alt={elem.name} />
+							<div className="review__wrap">
+								<span className="review__name">{elem.name}</span>
+								{/* <p className="review__text">{elem.content}</p> */}
+								<p 
+              className="review__text" 
+              dangerouslySetInnerHTML={{ __html: elem.content }} 
+            />
+							</div>
 						</div>
-					</div>
-					<div className="review">
-						<img src={imgReview2} className="review__image" alt="Евгений Стрыкало" />
-						<div className="review__wrap">
-							<span className="review__name">Евгений Стрыкало</span>
-							<p className="review__text">СМС-сопровождение до&nbsp;посадки <br /> Сразу после оплаты ж/д билетов <br /> и&nbsp;за&nbsp;3&nbsp;часа до&nbsp;отправления мы&nbsp;пришлем вам СМС-напоминание о&nbsp;поездке.</p>
-						</div>
-					</div>
+					))}
+
 				</div>
 			</div>
-			<div className="carousel__dots">
-				<div className="carousel__dot dot active__dot"></div>
-				<div className="carousel__dot dot__0"></div>
-				<div className="carousel__dot dot__1"></div>
-				<div className="carousel__dot dot__2"></div>
-				<div className="carousel__dot dot__3"></div>
+			<div className="carousel__dots" ref={element}>
+				<div className="carousel__dot dot active__dot" onClick={changeReview}></div>
+				{dotsArray.map((_elem, i) =>
+					<div className={`carousel__dot dot__${i}`} onClick={changeReview} key={`dot__${i}`}></div>
+				)}
 			</div>
 		</section>
-		</>
 	)
-}
-
-export default Reviews;
+};

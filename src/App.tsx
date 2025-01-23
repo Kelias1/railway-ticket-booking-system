@@ -1,16 +1,17 @@
-import Header from './components/header/Header';
-import Main from './pages/main/Main';
-import Footer from './components/footer/Footer';
+import { Provider } from "react-redux";
+import { store } from "./store/index";
+import { BrowserRouter } from 'react-router-dom';
+import { Pagination } from './pagination/Pagination';
 import './App.css';
 
 function App() {
 
   return (
-		<>
-		<Header />
-		<Main />
-		<Footer />
-		</>
+		<BrowserRouter basename={import.meta.env.VITE_PUBLIC_URL}>
+			<Provider store={store}>
+			<Pagination />
+			</Provider>
+		</BrowserRouter>
   )
 }
 

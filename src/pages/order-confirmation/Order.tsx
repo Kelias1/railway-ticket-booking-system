@@ -1,66 +1,82 @@
-import TrainSelection from '../../components/train-selection/TrainSelection';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { clearOrderPassengers, clearOrderPayment, sliceOrderState } from '../../store/sliceOrder';
+import { postOrderThunk, slicePostOrderState } from '../../store/slicePostOrder';
+import { currentStepFour } from '../../store/sliceBarProgress';
+import { sliceChoiceState } from '../../store/sliceChoice';
+import { slicePriceState } from '../../store/slicePrice';
+import { TrainSelection } from '../../components/train-selection/TrainSelection';
 import './order.css';
 
-function Order() {
+export const Order = () => {
+	const { route } = useAppSelector(sliceChoiceState);
+	const { totalPriceAll } = useAppSelector(slicePriceState);
+	const { user, departure } = useAppSelector(sliceOrderState);
+	const { status } = useAppSelector(slicePostOrderState);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		dispatch(currentStepFour());
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (status) {
+			navigate('/complete');
+		};
+	}, [navigate, status]);
+
+	function changePassengers() {
+		navigate('/ticket/passengers');
+		dispatch(clearOrderPassengers());
+	};
+
+	function changePayment() {
+		navigate('/ticket/payment');
+		dispatch(clearOrderPayment());
+	};
+
+	function confirmOrder() {
+		dispatch(postOrderThunk({ user, departure }));
+	};
+
 	return (
 		<div className='order'>
 			<div className='order__route'>
 				<h2 className='order__route-title'>Поезд</h2>
-				<TrainSelection />
+				{route && <TrainSelection route={route} btnText={'Изменить'} />}
 			</div>
 
 			<div className='order__passengers'>
 				<h2 className='order__passenger-title'>Пассажиры</h2>
 				<div className='order__passenger-container'>
 					<div className='passengers__container-list'>
-						<div className='passengers__container-item'>
-							<div className='passenger__container-avatar'>
-								<span className='passenger__container-img'></span>
-								<p className='passenger__container-ages'>Взрослый</p>
+						{departure.seats.map((elem, i) =>
+							<div className={`passengers__container-item${i === departure.seats.length - 1 ? '' : '-border'}`} key={i}>
+								<div className='passenger__container-avatar'>
+									<span className='passenger__container-img'></span>
+									<p className='passenger__container-ages'>{elem.person_info.is_adult ? 'Взрослый' : 'Ребенок'}</p>
+								</div>
+								<div className='passenger__container-data'>
+									<p className='passenger__container-name'>{`${elem.person_info.last_name} ${elem.person_info.first_name} ${elem.person_info.patronymic}`}</p>
+									<p className='passenger__container-gender'>{`Пол ${elem.person_info.gender ? 'мужской' : 'женский'}`}</p>
+									<p className='passenger__container-birth'>{`Дата рождения ${elem.person_info.birthday}`}</p>
+									<p className='passenger__container-docs'>{`${elem.person_info.document_type} ${elem.person_info.document_data}`}</p>
+								</div>
 							</div>
-							<div className='passenger__container-data'>
-								<p className='passenger__container-name'>Мартынюк Ирина Эдуардовна</p>
-								<p className='passenger__container-gender'>Пол женский</p>
-								<p className='passenger__container-birth'>Дата рождения 17.02.1985</p>
-								<p className='passenger__container-docs'>Паспорт РФ 4204 380694</p>
-							</div>
-						</div>
+						)}
+					</div>
 
-						<div className='passengers__container-item'>
-							<div className='passenger__container-avatar'>
-								<span className='passenger__container-img'></span>
-								<p className='passenger__container-ages'>Детский</p>
-							</div>
-							<div className='passenger__container-data'>
-								<p className='passenger__container-name'>Мартынюк Кирилл Сергеевич</p>
-								<p className='passenger__container-gender'>Пол мужской</p>
-								<p className='passenger__container-birth'>Дата рождения 25.01.2006</p>
-								<p className='passenger__container-docs'>Свидетельство о рождении VIII УН 256319</p>
-							</div>
-						</div>
-
-						<div className='passengers__container-item'>
-							<div className='passenger__container-avatar'>
-								<span className='passenger__container-img'></span>
-								<p className='passenger__container-ages'>Взрослый</p>
-							</div>
-							<div className='passenger__container-data'>
-								<p className='passenger__container-name'>Мартынюк Сергей Петрович</p>
-								<p className='passenger__container-gender'>Пол мужской</p>
-								<p className='passenger__container-birth'>Дата рождения 19.06.1982</p>
-								<p className='passenger__container-docs'>Паспорт РФ 4204 380694</p>
-							</div>
-						</div>
-					</div>					
 					<div className='passenger__container-change'>
 						<div className='passenger__container-total'>
 							<p>Всего</p>
 							<div className='passenger__container-price'>
-								<p>7 760</p>
+								<p>{totalPriceAll}</p>
 								<span className='details__total-currency-symbol'></span>
 							</div>
 						</div>
-						<button className='passenger__container-btn'>Изменить</button>
+						<button className='passenger__container-btn' onClick={changePassengers}>Изменить</button>
 					</div>
 				</div>
 			</div>
@@ -68,14 +84,12 @@ function Order() {
 			<div className='order__payment'>
 				<h2 className='order__payment-title'>Способ оплаты</h2>
 				<div className='order__payment-method'>
-					<p className='order__payment-text'>Наличными</p>
-					<button className='order__payment-btn' type='button'>Изменить</button>
+					<p className='order__payment-text'>{user.payment_method}</p>
+					<button className='order__payment-btn' type='button' onClick={changePayment}>Изменить</button>
 				</div>
 			</div>
 
-			<button className='order__btn' type='button'>подтвердить</button>
+			<button className='order__btn' type='button' onClick={confirmOrder}>подтвердить</button>
 		</div>
-	)
-}
-
-export default Order;
+	);
+};

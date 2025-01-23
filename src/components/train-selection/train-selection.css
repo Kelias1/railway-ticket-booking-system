@@ -197,7 +197,7 @@
 	line-height: 28px;
 	color: #2d2b2f;
 	margin: 0 5px;
-	/* width: 60px; */
+	width: 60px;
 	text-align: center;
 }
 
@@ -218,6 +218,30 @@
 	margin-right: 28px;
 }
 
+.train__amenities-wifi, .train__amenities-express, .train__amenities-coffee {
+	display: flex;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.train__amenities-wifi {
+	width: 24px;
+  height: 20px;
+  background-image: url(../../assets/images/wifi.png);
+}
+
+.train__amenities-express {
+	width: 20px;
+  height: 20px;
+  background-image: url(../../assets/images/express.png);
+}
+
+.train__amenities-coffee {
+	width: 20px;
+  height: 20px;
+  background-image: url(../../assets/images/cup.png);
+}
+
 .amenities-wifi__includes {
 	width: 20px;
 	height: 20px;
@@ -228,12 +252,6 @@
 	width: 20px;
 	height: 20px;
 	background-image: url(../../assets/images/express-includes.png);
-}
-.train__amenities-wifi, .train__amenities-express, .train__amenities-coffee {
-	display: flex;
-	background-repeat: no-repeat;
-	background-position: center;
-	opacity: .3;
 }
 
 .amenities-coffee__includes {

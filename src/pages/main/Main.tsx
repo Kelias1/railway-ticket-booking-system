@@ -1,19 +1,15 @@
-import About from './components/About';
-import HowItWorks from './components/HowItWorks';
-import Reviews from '../../components/reviews/Reviews';
-// import ChooseTicket from '../choose-ticket/ChooseTicket';
-// import OrderComplete from '../order-complete/OrderComplete';
+import { About } from './components/About';
+import { HowItWorks } from './components/HowItWorks';
+import { Reviews } from '../../components/reviews/Reviews';
 import './main.css';
 
 function Main() {
 	return (
-		<div className='container container__main__sidebar**'>
-			<main className="main main-sidebar**">
+		<div className='container'>
+			<main className="main">
 				<About />
 				<HowItWorks />
 				<Reviews />
-				{/* <ChooseTicket /> */}
-				{/* <OrderComplete /> */}
 			</main>
 		</div>
 	)

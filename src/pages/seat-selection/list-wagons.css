@@ -28,19 +28,19 @@
   margin: 36px 19px 32px auto;
 }
 
-.choice__train-departure-img,
-.choice__train-return-img {
+.choice__train-img-departure,
+.choice__train-img-return {
   display: flex;
   width: 76px;
   height: 60px;
 }
 
-.choice__train-departure-img {
+.choice__train-img-departure {
   margin-right: 10px;
   background-image: url(../../assets/images/choice-train-departure.png);
 }
 
-.choice__train-return-img {
+.choice__train-img-return {
   margin-right: 10px;
   margin-left: auto;
   background-image: url(../../assets/images/choice-train-return.png);
@@ -391,6 +391,11 @@
   margin-left: 6px;
 }
 
+.wagons__numbers-current:nth-child(n+3) {
+	font-size: 24px;
+	color:#000000;
+}
+
 .wagon__description-prices {
   display: flex;
 	/* justify-content: space-between; */
@@ -408,8 +413,6 @@
   font-weight: 700;
   line-height: 84px;
   color: #292929;
-  /* text-align: center; */
-  /* margin-top: 25px; */
 	margin: 30px auto -13px 37px;
 }
 
@@ -423,7 +426,7 @@
 }
 
 .wagon__seats-amount {
-	width: 21%;
+	width: 23%;
 	margin-top: 33px;
 	padding-left: 86px;
 }
@@ -431,11 +434,11 @@
 .wagon__seats-price {
 	width: 21%;
   margin-top: 33px;
-  margin-left: 126px;
+  margin-left: 109px;
 }
 
-.wagon__seats-amount > p,
-.wagon__seats-price > p {
+.wagon__seats-amount>p,
+.wagon__seats-price>p {
   margin-bottom: 22px;
 }
 
@@ -459,10 +462,6 @@
   line-height: 28px;
   color: #000000;
 }
-
-/* .seats__amount-num {
-  font-weight: 600;
-} */
 
 .seats__price-text {
   display: flex;
@@ -632,10 +631,10 @@
   text-align: center;
 }
 
-/* .wagon__description {
+.wagon__description {
   border-bottom: 1px dashed #C4C4C4;
   margin-bottom: 33px;
-} */
+}
 
 .seats__info-lux,
 .seats__info-coupe,
@@ -708,7 +707,7 @@
   cursor: not-allowed;
 }
 
-.scheme__seats-coupe,
+.scheme__seats-lux, .scheme__seats-coupe,
 .scheme__seats-platzkart,
 .scheme__seats-economy {
   position: absolute;
@@ -716,18 +715,6 @@
   height: 114px;
   top: 28px;
   left: 121px;
-}
-
-/* .scheme__seats-coupe {
-	top: 28px;
-}
-
-.scheme__seats-platzkart {
-	top: 28px;
-} */
-
-.scheme__seats-lux {
-	top: 42px;
 }
 
 .scheme__seats-economy {

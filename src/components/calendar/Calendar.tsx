@@ -1,55 +1,104 @@
+import { useEffect, useState, useRef } from 'react';
+import { getCurrentDate, monthInWeeks } from '../../utils/date';
+import { validateCalendarDate } from '../../utils/validators';
+import { DaysOfWeek } from './DaysOfWeek';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Weeks } from '../../models/index';
+import { choiceDateFrom, choiceDateTo, sliceChoiceState } from '../../store/sliceChoice';
 import './calendar.css';
 
-function Calendar() {
+type Props = {
+	classStyle: string,
+};
+
+export const Calendar = ({ classStyle }: Props) => {
+	const { fromDate } = useAppSelector(sliceChoiceState);
+	const date = getCurrentDate(fromDate);
+	const [numMonth, setNumMonth] = useState(date.numberMonth);
+	const [nameMonth, setNameMonth] = useState(date.month);
+	const [days, setDays] = useState<Weeks | null>(null);
+	const ref = useRef<HTMLDivElement>(null);
+	const dispatch = useAppDispatch();
+
+	function refClassListToggle() {
+		ref.current?.classList.remove(...ref.current.classList)
+		ref.current?.classList.add('hide-section');
+	};
+
+	function getDate(choiceDate: string) {
+		if (classStyle.includes('from') && validateCalendarDate(choiceDate)) {
+			dispatch(choiceDateFrom(choiceDate));
+			refClassListToggle();
+		};
+
+		if (classStyle.includes('to') && validateCalendarDate(choiceDate)) {
+			dispatch(choiceDateTo(choiceDate));
+			refClassListToggle();
+		};
+	};
+
+	useEffect(() => {
+		function outsideClick(event: MouseEvent): void {
+			if (event.target instanceof HTMLElement && !ref.current?.contains(event.target)) {
+				refClassListToggle();
+			};
+		};
+
+		document.addEventListener("mousedown", outsideClick);
+		return () => document.removeEventListener("mousedown", outsideClick);
+	}, [ref]);
+
+	useEffect(() => {
+		const weeks = monthInWeeks(numMonth);
+		setDays(weeks);
+	}, [numMonth]);
+
+	function onChoiceDate(day: number, month: number): void {
+		const choiceDate = date.choiceDate(date.year, month, day);
+		const compareChoiceDate = new Date(date.year, month, day).getTime();
+		const compareToday = new Date(date.year, date.numberMonth, date.numDate).getTime();
+
+		if (fromDate === '' && compareChoiceDate >= compareToday) {
+			getDate(choiceDate);
+		} else if (fromDate !== '' && compareToday <= compareChoiceDate) {
+			getDate(choiceDate);
+		};
+	};
+
+	function prevMonth() {
+		setNumMonth((prev) => (prev - 1));
+		setNameMonth(date.nameMonth(date.year, numMonth - 1));
+	};
+
+	function nextMonth() {
+		setNumMonth((prev) => (prev + 1));
+		setNameMonth(date.nameMonth(date.year, numMonth + 1));
+	};
+
 	return (
-		<div className="calendar__from filter__calendar-from">
+		<div className={classStyle} ref={ref}>
 			<div className="calendar__linker"></div>
 			<div className="calendar__container">
 				<div className="calendar__month">
-					<button className="prev__month" type="button"></button>
-					<p className="calendar__month-desc">август</p>
-					<button className="next__month" type="button"></button>
+					<button className="prev__month" onClick={prevMonth} type="button"></button>
+					<p className="calendar__month-desc">{nameMonth}</p>
+					<button className="next__month" onClick={nextMonth} type="button"></button>
 				</div>
-				<div className="calendar__date">
-				    <div className="date__other-month">29</div>
-				    <div className="date__other-month">30</div>
-				    <div className="date__other-month">31</div>
-				    <div className="date__current-month">1</div>
-				    <div className="date__current-month">2</div>
-				    <div className="date__current-month">3</div>
-				    <div className="date__current-month">4</div>
-				    <div className="date__current-month">5</div>
-				    <div className="date__current-month">6</div>
-				    <div className="date__current-month">7</div>
-				    <div className="date__current-month">8</div>
-				    <div className="date__current-month">9</div>
-				    <div className="date__current-month">10</div>
-				    <div className="date__current-month">11</div>
-				    <div className="date__current-month">12</div>
-				    <div className="date__current-month">13</div>
-				    <div className="date__current-month">14</div>
-				    <div className="date__current-month">15</div>
-				    <div className="date__current-month">16</div>
-				    <div className="date__current-month">17</div>
-				    <div className="date__current-month date__today">18</div>
-				    <div className="date__current-month">19</div>
-				    <div className="date__current-month">20</div>
-				    <div className="date__current-month">21</div>
-				    <div className="date__current-month">22</div>
-				    <div className="date__current-month">23</div>
-				    <div className="date__current-month">24</div>
-				    <div className="date__current-month">25</div>
-				    <div className="date__current-month">26</div>
-				    <div className="date__current-month">27</div>
-				    <div className="date__current-month">28</div>
-				    <div className="date__current-month">29</div>
-				    <div className="date__current-month">30</div>
-				    <div className="date__other-month">1</div>
-				    <div className="date__other-month">2</div>
-		  		</div>
+				<div className="calendar__date**">
+				{days !== null ? <div className="calendar__date">
+					{Object.entries(days).map((elem) =>
+						<DaysOfWeek
+							array={elem[1]}
+							date={date.numDate}
+							currentMonth={date.numberMonth}
+							otherMonth={numMonth}
+							onChoiceDate={onChoiceDate}
+							key={elem[0]}
+						/>
+					)}
+				</div> : null}
+				</div>
 			</div>
 		</div>
 	)
-}
-
-export default Calendar;
+};

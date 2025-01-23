@@ -1,91 +1,47 @@
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getLastTicketsThunk, sliceGetLastTicketsState } from '../../store/sliceGetLastTickets';
 import './last-tickets.css';
 
-function LastTickets() {
+export const LastTickets = () => {
+	const { items } = useAppSelector(sliceGetLastTicketsState);
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(getLastTicketsThunk());
+	}, [dispatch]);
+
 	return (
 		<aside className="siderbar__last-tickets">
 			<h3 className="last-tickets__title">последние билеты</h3>
 			<ul className="last-tickets__list">
-				<li className="last-tickets__list-item">
-					<div className="item__from-to">
-						<div className="item__from">
-							<p className="item__city">санкт петербург</p>
-							<p className="item__station">
-								Курский <br />
-								вокзал
-							</p>
+				{items.map((elem) =>
+					<li className="last-tickets__list-item" key={elem.departure._id}>
+						<div className="item__from-to">
+							<div className="item__from">
+								<p className="item__city">{elem.departure.from.city.name}</p>
+								<p className="item__station">
+									{elem.departure.from.railway_station_name} вокзал
+								</p>
+							</div>
+							<div className="item__to">
+								<p className="item__city">{elem.departure.to.city.name}</p>
+								<p className="item__station">
+									{elem.departure.to.railway_station_name} вокзал
+								</p>
+							</div>
 						</div>
-						<div className="item__to">
-							<p className="item__city">Самара</p>
-							<p className="item__station">
-								Московский <br />
-								вокзал
-							</p>
+						<div className="item__amenities-price">
+							<div className="item__amenities"></div>
+							<div className="item__start-price">
+								<p className="price__start-text">от</p>
+								<p className="price__start-value">{elem.min_price}</p>
+								<span className="currency-symbol"></span>
+							</div>
 						</div>
-					</div>
-					<div className="item__amenities-price">
-						<div className="item__amenities"></div>
-						<div className="item__start-price">
-							<p className="price__start-text">от</p>
-							<p className="price__start-value">2 500</p>
-							<span className="currency-symbol"></span>
-						</div>
-					</div>
-				</li>
-				<li className="last-tickets__list-item">
-					<div className="item__from-to">
-						<div className="item__from">
-							<p className="item__city">Москва</p>
-							<p className="item__station">
-								Курский <br />
-								вокзал
-							</p>
-						</div>
-						<div className="item__to">
-							<p className="item__city">Казань</p>
-							<p className="item__station">
-								Московский <br />
-								вокзал
-							</p>
-						</div>
-					</div>
-					<div className="item__amenities-price">
-						<div className="item__amenities"></div>
-						<div className="item__start-price">
-							<p className="price__start-text">от</p>
-							<p className="price__start-value">3 500</p>
-							<span className="currency-symbol"></span>
-						</div>
-					</div>
-				</li>
-				<li className="last-tickets__list-item">
-					<div className="item__from-to">
-						<div className="item__from">
-							<p className="item__city">Казань</p>
-							<p className="item__station">
-								Курский <br />
-								вокзал
-							</p>
-						</div>
-						<div className="item__to">
-							<p className="item__city">Нижний новгород</p>
-							<p className="item__station">
-								Московский <br />
-								вокзал
-							</p>
-						</div>
-					</div>
-					<div className="item__amenities-price">
-						<div className="item__amenities"></div>
-						<div className="item__start-price">
-							<p className="price__start-text">от</p>
-							<p className="price__start-value">3 800</p>
-							<span className="currency-symbol"></span>
-						</div>
-					</div>
-				</li>
+					</li>
+				)}
 			</ul>
 		</aside>
 	)
-}
-
-export default LastTickets
+};

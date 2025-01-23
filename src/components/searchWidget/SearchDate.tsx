@@ -1,22 +1,14 @@
-// import Calendar from '../calendar/Calendar';
+import { InputDate } from '../calendar/InputDate';
 import './searchWidget.css';
 
-function SearchDate() {
+export const SearchDate = () => {
 	return (
-		<>
-		{/* ВАЖНО!!!!!
-
-		Для просмотра календаря необходимо активировать компонент Calendar. No olvidar borrar la apertura y cierre del div vacio */}
 		<div className="search__date">
 			<p className="search__date-text">Дата</p>
 			<div className="search__date-inputs">
-				<input type="text" className="date__input-from" placeholder="ДД.ММ.ГГ" value="" />
-				{/* <Calendar /> */}
-				<input type="text" className="date__input-to" placeholder="ДД.ММ.ГГ" value="" />
+				<InputDate inputStyle="date__input-from" calendarStyle="calendar__from" />
+				<InputDate inputStyle="date__input-to" calendarStyle="calendar__to" />
 			</div>
 		</div>
-		</>
-	)
-}
-
-export default SearchDate
+	);
+};

@@ -1,6 +1,6 @@
 import '../main.css';
 
-function HowItWorks() {
+export const HowItWorks = () => {
 	return (
 		<section id="howItWorks" className="main__how-it-works">
 					<div className="how-it-works__header">
@@ -23,6 +23,4 @@ function HowItWorks() {
 					</div>
 				</section>
 	)
-}
-
-export default HowItWorks;
+};
