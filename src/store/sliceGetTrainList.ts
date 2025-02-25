@@ -8,7 +8,6 @@ export const getRouteThunk = createAsyncThunk('sliceGetCity/getRouteThunk', asyn
   return response.data;
 });
 
-
 const initialState: IGetStatus<IRoute | null> = {
   items: null,
   loading: false,

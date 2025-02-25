@@ -1,5 +1,3 @@
-// PARTE I
-
 import { SIAgeTickets, SICoachSeat, SIChildTickets, SIPriceSeat, SIAmountTicket, ISeatsClass } from '../models/interfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NumberIdCoach } from '../models/index';
@@ -66,8 +64,6 @@ const initialState: State = {
   totalPriceChild: 0,
   totalPriceAll: 0,
 };
-
-// PART II
 
 export const slicePrice = createSlice({
   name: 'slicePrice',
@@ -243,8 +239,6 @@ export const slicePrice = createSlice({
         state.totalAmountTickets += actions.payload.amount;
       };
     },
-
-			// PARTE III
 
     clearAllPrices: (state) => {
       state.firstClass.seatsAge = 0;
